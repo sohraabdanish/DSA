@@ -10,7 +10,7 @@
  *         this.right = right;
  *     }
  * }
- */
+ */ 
 public class Solution {
     List<int> resultList = new();
     public IList<int> InorderTraversal(TreeNode root) {
