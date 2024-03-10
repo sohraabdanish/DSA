@@ -1,4 +1,4 @@
-#region Driver Code
+#region DriverCode
 //{ Driver Code Starts
 //Initial Template for C#
 
@@ -112,7 +112,7 @@ namespace DriverCode
                 var str = Console.ReadLine().Trim();
                 var root = gfg.buildTree(str);
                 Solution obj = new Solution();
-                var res = obj.bottomView(root);
+                var res = obj.topView(root);
                 foreach(int i in res){
                     Console.Write(i + " ");
                 }
@@ -122,9 +122,8 @@ namespace DriverCode
         }
     }
 }
-
 // } Driver Code Ends
-#endregion
+
 
 //User function Template for C#
 
@@ -143,23 +142,30 @@ namespace DriverCode
         }
     }
 */
+#endregion
 class Solution
 {
     
-    //Function to return a list containing the bottom view of the given tree.
-    public List<int> bottomView(Node root)
+    //Function to return a list of nodes visible from the top view 
+    //from left to right in Binary Tree.
+    public List<int> topView(Node root)
     {
-       List<int> resultList = new List<int>();
-       if(root == null) return resultList;
-       Dictionary<int,int> map = new Dictionary<int,int>();
-       Queue<KeyValuePair<Node, int>> q = new Queue<KeyValuePair<Node, int>>();
-       q.Enqueue(new KeyValuePair<Node, int>(root,0));
-       while(q.Count>0)
-       {
+        List<int> resultList = new List<int>();
+        if(root == null) return resultList;
+        Dictionary<int, int> map = new Dictionary<int, int>();
+        Queue<KeyValuePair<Node, int>> q = new Queue<KeyValuePair<Node, int>>();
+        q.Enqueue(new KeyValuePair<Node, int>(root,0));
+        while(q.Count > 0)
+        {
             var temp = q.Dequeue();
             var current = temp.Key;
             var verticalDistance = temp.Value;
-            map[verticalDistance] = current.data;
+
+            if(!map.ContainsKey(verticalDistance))
+            {
+                map[verticalDistance]=current.data;
+            }
+
             if(current.left!=null)
             {
                 q.Enqueue(new KeyValuePair<Node, int>(current.left, verticalDistance-1));
@@ -168,11 +174,11 @@ class Solution
             {
                 q.Enqueue(new KeyValuePair<Node, int>(current.right, verticalDistance+1));
             }
-       }
-       foreach(var item in map.OrderBy(kvp=>kvp.Key))
-       {
-           resultList.Add(item.Value);
-       }
-       return resultList;
+        }
+        foreach(var item in map.OrderBy(kvp=>kvp.Key))
+        {
+            resultList.Add(item.Value);
+        }
+        return resultList;
     }
 }
